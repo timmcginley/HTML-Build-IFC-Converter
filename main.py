@@ -8,9 +8,9 @@
 import ifcopenshell
 
 # get the IFC file
-model = ifcopenshell.open("model/Duplex_A_20110907_optimized.ifc")
+# model = ifcopenshell.open("model/Duplex_A_20110907_optimized.ifc")
 # model = ifcopenshell.open("model/Office_A_20110811_optimized.ifc")
-# model = ifcopenshell.open("model/F21_80_3W_Team01_Sub1.ifc")
+model = ifcopenshell.open("model/21_01.ifc")
 
 # create an HTML file to write to
 f = open("output/index.html", "w")
@@ -69,13 +69,18 @@ floors.sort(key=lambda x: x.Elevation, reverse=True)
 for floor in floors:
     # check if floor is lower than elevation...
     # TODO: we need to sort these, IFC doesn't do it automatically...
-    
+    type = "floor_upper"
     if (site_elev == floor.Elevation):
-        cont+=6*"\t"+"<floor- class=\"floor_ground\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
+        type = "floor_ground"
     elif (site_elev < floor.Elevation):
-        cont+=6*"\t"+"<floor- class=\"floor_upper\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
+        type = "floor_upper"
     else:
-        cont+=6*"\t"+"<floor- class=\"floor_lower\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
+        type = "floor_lower"
+    
+    #TODO: Maybe elev should be shown to the right of the floor?
+    
+    cont+=6*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))
+        
 
 # CLOSE IT ALL
 cont+=5*"\t"+"</core->\n"
