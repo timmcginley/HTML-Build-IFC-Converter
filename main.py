@@ -14,44 +14,53 @@ model = ifcopenshell.open("model/Duplex_A_20110907_optimized.ifc")
 
 # create an HTML file to write to
 f = open("output/index.html", "w")
-content=""
+cont=""
 
 # variable for to store the elevation of the site
-site_elevation = 0
+site_elev = 0
 
 # ---- start of standard HTML, this could probably just be read from a file.
 
+
+# start the indent of the HTML file
+indent = 0
+
 # ADD HTML
-content+="<html>\n"
+cont+=0*"\t"+"<html>\n"
 
 # ADD HEAD
-content+="\t<head>\n"
-content+="\t\t<link rel='stylesheet' href='css/html-build.css'></link>\n"
-content+="\t\t<!--- put some links in here...--->\n"
-content+="\t</head>\n"
+cont+=1*"\t"+"<head>\n"
+cont+=2*"\t"+"<link rel='stylesheet' href='css/html-build.css'></link>\n"
+cont+=2*"\t"+"<!--- put some links in here...--->\n"
+cont+=1*"\t"+"</head>\n"
 
 # ADD BODY
-content+="\t<body>\n"
+cont+=1*"\t"+"<body>\n"
+
+
 
 # ---- end of standard HTML
 
 # ---- start of custom HTML entities
 
+# TODO: How to know the level of indent?
+# TODO: Can we make these in functions?
+
 # ADD PROJECT
 project = model.by_type('IfcProject')[0]
-content+="\t\t<project- name=\"{d}\">\n".format(d=project.LongName)
+cont+=2*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
 # it looks like it would make sense to use the DOM here and append stuff to it...
 
 # ADD SITE
 site = model.by_type('IfcSite')[0]
-site_elevation = site.RefElevation
-content+="\t\t\t<site- lat=\"{}\" long=\"{}\" elev=\"{}\">\n".format(site.RefLatitude,site.RefLongitude,site_elevation )
+site_elev = site.RefElevation
+cont+=3*"\t"+"<site- lat=\"{}\" long=\"{}\" elev=\"{}\">\n".format(site.RefLatitude,site.RefLongitude,site_elev )
 
 # ADD BUILDING
-content+="\t\t\t\t<building->\n"
+cont+=4*"\t"+"<building->\n"
 
 # ADD CORE - I know its not normal,  but I think it might be useful...
-content+="\t\t\t\t\t<core->\n"
+cont+=5*"\t"+"<core->\n"
 
 # ADD FLOOR(S)
 floors = model.by_type('IfcBuildingStorey')
@@ -61,28 +70,32 @@ for floor in floors:
     # check if floor is lower than elevation...
     # TODO: we need to sort these, IFC doesn't do it automatically...
     
-    
-
-    if (site_elevation == floor.Elevation):
-        content+="\t\t\t\t\t\t<floor- class=\"floor_ground\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
-    elif (site_elevation < floor.Elevation):
-        content+="\t\t\t\t\t\t<floor- class=\"floor_upper\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
+    if (site_elev == floor.Elevation):
+        cont+=6*"\t"+"<floor- class=\"floor_ground\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
+    elif (site_elev < floor.Elevation):
+        cont+=6*"\t"+"<floor- class=\"floor_upper\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
     else:
-        content+="\t\t\t\t\t\t<floor- class=\"floor_lower\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
-
+        cont+=6*"\t"+"<floor- class=\"floor_lower\" elev=\"{}\" >{}</floor->\n".format(floor.Elevation, floor.Name)
 
 # CLOSE IT ALL
-content+="\t\t\t\t\t</core->\n"
-content+="\t\t\t\t</building->\n"
-content+="\t\t\t</site->\n"
-content+="\t\t</project->\n"
-content+="\t</body>\n"
-content+="</html>\n"
+cont+=5*"\t"+"</core->\n"
+cont+=4*"\t"+"</building->\n"
+cont+=3*"\t"+"</site->\n"
+cont+=2*"\t"+"</project->\n"
+cont+=1*"\t"+"</body>\n"
+cont+=0*"\t"+"</html>\n"
 
 # WRITE IT OUT
-f.write(content)
+f.write(cont)
 f.close()
 
 # TELL EVERYONE ABOUT IT
 print("html build complete")
+
+# functions here ...
+
+def floors():
+  print("Hello from a function")
+
+
 
