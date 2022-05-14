@@ -1,34 +1,44 @@
 import ifcopenshell
 import os.path
+import time
 
 def modelLoader(name):
-    # get the IFC file
-    # model = ifcopenshell.open("model/Duplex_A_20110907_optimized.ifc")
-    # model = ifcopenshell.open("model/Office_A_20110811_optimized.ifc")
+
+    ''' 
+        load the IFC file 
+    '''
     
     model_url = "model/"+name+".ifc"
+    start_time = time.time()
 
     if (os.path.exists(model_url)):
         model = ifcopenshell.open(model_url)
+        print("\n\tFile    : {}.ifc".format(name))
+        print("\tLoad    : {:.2f}s".format(float(time.time() - start_time)))
+        
+        start_time = time.time()
         writeHTML(model,name)
+        print("\tConvert : {:.4f}s".format(float(time.time() - start_time)))
+        
     else:
         print("\nERROR: please check your model folder : " +model_url+" does not exist")
 
 def writeHTML(model,name):
-    ''' write the IFC file '''
+
+    ''' 
+        write the HTML entities 
+    '''
     
-    # Directory
-    directory = name
-  
-    # Parent Directory path
+    # parent directory - put in setting file?
     parent_dir = "output/"
     
     # create an HTML file to write to
     if (os.path.exists("output/"+name))==False:
-        path = os.path.join(parent_dir, directory)
+        path = os.path.join(parent_dir, name)
         os.mkdir(path)
     
-    f = open("output/"+name+"/index.html", "w")
+    f_loc="output/"+name+"/index.html"
+    f = open(f_loc, "w")
     
     cont=""
 
@@ -59,10 +69,14 @@ def writeHTML(model,name):
     f.close()
 
     # ---- TELL EVERYONE ABOUT IT
-    print("\n\t--- html build file created in [location]")
+    print("\tSave    : "+f_loc)
 
 def writeCustomHTML(model):
 
+    ''' 
+        write the custom HTML entities 
+    '''
+    
     custom=""
     site_elev = 0 # variable for to store the elevation of the site
     
