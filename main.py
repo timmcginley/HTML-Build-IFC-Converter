@@ -7,11 +7,19 @@
 # obviously we need to ...
 import ifcopenshell
 import HTMLBuild as hb
+import os.path
 
-# get the IFC file
-# model = ifcopenshell.open("model/Duplex_A_20110907_optimized.ifc")
-# model = ifcopenshell.open("model/Office_A_20110811_optimized.ifc")
-model = ifcopenshell.open("model/21_03_01.ifc")
+def modelLoader(name):
+    # get the IFC file
+    # model = ifcopenshell.open("model/Duplex_A_20110907_optimized.ifc")
+    # model = ifcopenshell.open("model/Office_A_20110811_optimized.ifc")
+    
+    model_url = "model/"+name+".ifc"
 
-hb.writeHTML(model)
+    if (os.path.exists(model_url)):
+        model = ifcopenshell.open(model_url)
+        hb.writeHTML(model)
+    else:
+        print("\nERROR: please check your model folder : " +model_url+" does not exist")
 
+modelLoader("duplex")

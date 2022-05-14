@@ -1,58 +1,63 @@
+
+
 def writeHTML(model):
-
-
-
+    ''' write the IFC file '''
+    
     # create an HTML file to write to
     f = open("output/index.html", "w")
+    
     cont=""
 
-    # variable for to store the elevation of the site
-    site_elev = 0
-
-    # ---- start of standard HTML, this could probably just be read from a file.
-
-
-    # start the indent of the HTML file
-    indent = 0
-
-    # ADD HTML
+    # ---- START OF STANDARD HTML
     cont+=0*"\t"+"<html>\n"
 
-    # ADD HEAD
+    # ---- ADD HEAD
     cont+=1*"\t"+"<head>\n"
     cont+=2*"\t"+"<link rel='stylesheet' href='css/html-build.css'></link>\n"
     cont+=2*"\t"+"<!--- put some links in here...--->\n"
+    
+    # ---- CLOSE HEAD
     cont+=1*"\t"+"</head>\n"
 
-    # ADD BODY
+    # ---- ADD BODY
     cont+=1*"\t"+"<body>\n"
 
+    # ---- ADD CUSTOM HTML FOR THE BUILDING HERE
+    cont+=writeCustomHTML(model)
+    
+    # ---- CLOSE BODY AND HTML ENTITIES
+    cont+=1*"\t"+"</body>\n"
+    cont+=0*"\t"+"</html>\n"
 
+    # ---- WRITE IT OUT
+    f.write(cont)
+    f.close()
 
-    # ---- end of standard HTML
+    # ---- TELL EVERYONE ABOUT IT
+    print("\n\t--- html build file created in [location]")
 
-    # ---- start of custom HTML entities
+def writeCustomHTML(model):
 
-    # TODO: How to know the level of indent?
-    # TODO: Can we make these in functions?
-
-    # ADD PROJECT
+    custom=""
+    site_elev = 0 # variable for to store the elevation of the site
+    
+    # ---- ADD PROJECT CUSTOM ENTITY
     project = model.by_type('IfcProject')[0]
-    cont+=2*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
+    custom+=2*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
     # it looks like it would make sense to use the DOM here and append stuff to it...
 
-    # ADD SITE
+    # ---- ADD SITE CUSTOM ENTITY
     site = model.by_type('IfcSite')[0]
     site_elev = site.RefElevation
-    cont+=3*"\t"+"<site- lat=\"{}\" long=\"{}\" elev=\"{}\">\n".format(site.RefLatitude,site.RefLongitude,site_elev )
+    custom+=3*"\t"+"<site- lat=\"{}\" long=\"{}\" elev=\"{}\">\n".format(site.RefLatitude,site.RefLongitude,site_elev )
 
-    # ADD BUILDING
-    cont+=4*"\t"+"<building->\n"
+    # ---- ADD BUILDING CUSTOM ENTITY
+    custom+=4*"\t"+"<building->\n"
 
-    # ADD CORE - I know its not normal,  but I think it might be useful...
-    cont+=5*"\t"+"<core->\n"
+    # ---- ADD CORE - I know its not normal,  but I think it might be useful... SO KILL IT!!!
+    custom+=5*"\t"+"<core->\n"
 
-    # ADD FLOOR(S)
+    # ---- ADD FLOOR CUSTOM ENTITIES
     floors = model.by_type('IfcBuildingStorey')
     floors.sort(key=lambda x: x.Elevation, reverse=True)
 
@@ -66,29 +71,16 @@ def writeHTML(model):
         else:
             type = "floor_lower"
         
-        #TODO: Maybe elev should be shown to the right of the floor?
-        
-        cont+=6*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))
-            
+        custom+=6*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
 
-    # CLOSE IT ALL
-    cont+=5*"\t"+"</core->\n"
-    cont+=4*"\t"+"</building->\n"
-    cont+=3*"\t"+"</site->\n"
-    cont+=2*"\t"+"</project->\n"
-    cont+=1*"\t"+"</body>\n"
-    cont+=0*"\t"+"</html>\n"
-
-    # WRITE IT OUT
-    f.write(cont)
-    f.close()
-
-    # TELL EVERYONE ABOUT IT
-    print("html build complete")
-
-    # functions here ...
-
-
+    # ---- CLOSE IT ALL
+    custom+=5*"\t"+"</core->\n"
+    custom+=4*"\t"+"</building->\n"
+    custom+=3*"\t"+"</site->\n"
+    custom+=2*"\t"+"</project->\n"
+    
+    # ---- RETURN THE CUSTOM HTML
+    return custom
 
 
 
