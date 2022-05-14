@@ -1,4 +1,18 @@
+import ifcopenshell
+import os.path
 
+def modelLoader(name):
+    # get the IFC file
+    # model = ifcopenshell.open("model/Duplex_A_20110907_optimized.ifc")
+    # model = ifcopenshell.open("model/Office_A_20110811_optimized.ifc")
+    
+    model_url = "model/"+name+".ifc"
+
+    if (os.path.exists(model_url)):
+        model = ifcopenshell.open(model_url)
+        writeHTML(model)
+    else:
+        print("\nERROR: please check your model folder : " +model_url+" does not exist")
 
 def writeHTML(model):
     ''' write the IFC file '''
@@ -13,8 +27,9 @@ def writeHTML(model):
 
     # ---- ADD HEAD
     cont+=1*"\t"+"<head>\n"
+    
+    # ---- ADD HTMLBUILD CSS - COULD ADD OTHERS HERE :)
     cont+=2*"\t"+"<link rel='stylesheet' href='css/html-build.css'></link>\n"
-    cont+=2*"\t"+"<!--- put some links in here...--->\n"
     
     # ---- CLOSE HEAD
     cont+=1*"\t"+"</head>\n"
