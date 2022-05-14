@@ -10,15 +10,25 @@ def modelLoader(name):
 
     if (os.path.exists(model_url)):
         model = ifcopenshell.open(model_url)
-        writeHTML(model)
+        writeHTML(model,name)
     else:
         print("\nERROR: please check your model folder : " +model_url+" does not exist")
 
-def writeHTML(model):
+def writeHTML(model,name):
     ''' write the IFC file '''
     
+    # Directory
+    directory = name
+  
+    # Parent Directory path
+    parent_dir = "output/"
+    
     # create an HTML file to write to
-    f = open("output/index.html", "w")
+    if (os.path.exists("output/"+name))==False:
+        path = os.path.join(parent_dir, directory)
+        os.mkdir(path)
+    
+    f = open("output/"+name+"/index.html", "w")
     
     cont=""
 
@@ -29,7 +39,7 @@ def writeHTML(model):
     cont+=1*"\t"+"<head>\n"
     
     # ---- ADD HTMLBUILD CSS - COULD ADD OTHERS HERE :)
-    cont+=2*"\t"+"<link rel='stylesheet' href='css/html-build.css'></link>\n"
+    cont+=2*"\t"+"<link rel='stylesheet' href='../css/html-build.css'></link>\n"
     
     # ---- CLOSE HEAD
     cont+=1*"\t"+"</head>\n"
