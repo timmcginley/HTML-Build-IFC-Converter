@@ -98,15 +98,19 @@ def writeCustomHTML(model):
     for floor in floors:
         # check if floor is lower than elevation...
         type = "floor_upper"
-        if (site_elev == floor.Elevation):
+        if ( site_elev-.1 <= floor.Elevation <= site_elev+.1):
             type = "floor_ground"
+            
         elif (site_elev < floor.Elevation):
             type = "floor_upper"
         else:
             type = "floor_lower"
         
         custom+=5*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
-
+        
+        if (type == "floor_ground"):
+            custom+="<ground-></ground->"
+    
     # ---- CLOSE IT ALL
     custom+=4*"\t"+"</building->\n"
     custom+=3*"\t"+"</site->\n"
