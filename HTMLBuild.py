@@ -31,7 +31,6 @@ def writeHTML(model,name):
     
     # parent directory - put in setting file?
     parent_dir = "output/"
-    
     # create an HTML file to write to
     if (os.path.exists("output/"+name))==False:
         path = os.path.join(parent_dir, name)
@@ -39,29 +38,22 @@ def writeHTML(model,name):
     
     f_loc="output/"+name+"/index.html"
     f = open(f_loc, "w")
-    
     cont=""
-
+    
     # ---- START OF STANDARD HTML
     cont+=0*"\t"+"<html>\n"
-
     # ---- ADD HEAD
     cont+=1*"\t"+"<head>\n"
-    
     # ---- ADD HTMLBUILD CSS - COULD ADD OTHERS HERE :)
     cont+=2*"\t"+"<link rel='stylesheet' href='../css/html-build.css'></link>\n"
-    
     # ---- ADD HTMLBUILD JS - COULD ADD OTHERS HERE :)
     cont+=2*"\t"+"<script src='../js/html-build.js'></script>\n"
-    
     # ---- JQUERY - IT WOULD BE CRAZY NOT TO
     cont+=2*"\t"+"<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'></script>\n"
-    
     # ---- CLOSE HEAD
     cont+=1*"\t"+"</head>\n"
-
     # ---- ADD BODY
-    cont+=1*"\t"+"<body onload=\"main()\">\n"
+    cont+=1*"\t"+"<body onload=\"main()\">\n"  
     
     # ---- ADD CUSTOM HTML FOR THE BUILDING HERE
     cont+=writeCustomHTML(model)
@@ -99,9 +91,6 @@ def writeCustomHTML(model):
     # ---- ADD BUILDING CUSTOM ENTITY
     custom+=4*"\t"+"<building->\n"
 
-    # ---- ADD CORE - I know its not normal,  but I think it might be useful... SO KILL IT!!!
-    custom+=5*"\t"+"<core->\n"
-
     # ---- ADD FLOOR CUSTOM ENTITIES
     floors = model.by_type('IfcBuildingStorey')
     floors.sort(key=lambda x: x.Elevation, reverse=True)
@@ -116,10 +105,9 @@ def writeCustomHTML(model):
         else:
             type = "floor_lower"
         
-        custom+=6*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
+        custom+=5*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
 
     # ---- CLOSE IT ALL
-    custom+=5*"\t"+"</core->\n"
     custom+=4*"\t"+"</building->\n"
     custom+=3*"\t"+"</site->\n"
     custom+=2*"\t"+"</project->\n"
