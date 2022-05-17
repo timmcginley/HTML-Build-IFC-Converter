@@ -2,4 +2,7 @@
 
 import HTMLBuild as hb
 
-hb.modelLoader("22_05_01")
+i=1
+while i < 10:
+    hb.modelLoader("22_{}_01".format(str(i).rjust(2, '0')))
+    i+=1

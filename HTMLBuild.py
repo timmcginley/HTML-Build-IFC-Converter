@@ -52,19 +52,22 @@ def writeHTML(model,name):
     cont+=2*"\t"+"<link rel='stylesheet' href='../css/html-build.css'></link>\n"
     
     # ---- ADD HTMLBUILD JS - COULD ADD OTHERS HERE :)
-    # cont+=2*"\t"+"<script src='../js/html-build.js'></script>\n"
+    cont+=2*"\t"+"<script src='../js/html-build.js'></script>\n"
+    
+    # ---- JQUERY - IT WOULD BE CRAZY NOT TO
+    cont+=2*"\t"+"<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'></script>\n"
     
     # ---- CLOSE HEAD
     cont+=1*"\t"+"</head>\n"
 
     # ---- ADD BODY
-    cont+=1*"\t"+"<body>\n"
+    cont+=1*"\t"+"<body onload=\"main()\">\n"
     
     # ---- ADD CUSTOM HTML FOR THE BUILDING HERE
     cont+=writeCustomHTML(model)
     
     # ---- CLOSE BODY AND HTML ENTITIES
-    cont+=1*"\t"+"</body>\n"
+    cont+=1*"\t"+"</body>\n"   
     cont+=0*"\t"+"</html>\n"
 
     # ---- WRITE IT OUT
@@ -87,7 +90,7 @@ def writeCustomHTML(model):
     project = model.by_type('IfcProject')[0]
     custom+=2*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
     # it looks like it would make sense to use the DOM here and append stuff to it...
-
+    
     # ---- ADD SITE CUSTOM ENTITY
     site = model.by_type('IfcSite')[0]
     site_elev = site.RefElevation
