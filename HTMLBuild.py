@@ -51,12 +51,15 @@ def writeHTML(model,name):
     # ---- ADD HTMLBUILD CSS - COULD ADD OTHERS HERE :)
     cont+=2*"\t"+"<link rel='stylesheet' href='../css/html-build.css'></link>\n"
     
+    # ---- ADD HTMLBUILD JS - COULD ADD OTHERS HERE :)
+    # cont+=2*"\t"+"<script src='../js/html-build.js'></script>\n"
+    
     # ---- CLOSE HEAD
     cont+=1*"\t"+"</head>\n"
 
     # ---- ADD BODY
     cont+=1*"\t"+"<body>\n"
-
+    
     # ---- ADD CUSTOM HTML FOR THE BUILDING HERE
     cont+=writeCustomHTML(model)
     
