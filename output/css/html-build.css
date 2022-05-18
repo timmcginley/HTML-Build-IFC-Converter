@@ -115,13 +115,29 @@ plan- {
 	margin: auto;
 	padding:0px;
 	border-color: #000;
-	width:270px;
+	width:90%;
 	color:#1b1b1b;
 	/*border-top: 4px solid black;*/
 	min-height: 20px;
 	overflow: hidden;
 	margin:auto;
 	margin-top:5px;
+}
+
+/* plan - this contains a plan of the currently selected floor*/
+.plan {
+	display:block;
+	background-color:#fff;
+	margin:auto;
+	margin-top:5%;
+	margin-bottom:5%;
+	height:100px;
+	width: 200px;
+	color:#1b1b1b;
+	/*border-top: 4px solid black;*/
+	min-height: 20px;
+	overflow: hidden;
+	border: 3px solid black;
 }
 
 /* properties - this contains the calculated properties*/
@@ -131,7 +147,7 @@ props- {
 	margin: auto;
 	padding:0px;
 	border-color: #000;
-	width:270px;
+	width:90%;
 	color:#1b1b1b;
 	/*border-top: 4px solid black;*/
 	min-height: 20px;

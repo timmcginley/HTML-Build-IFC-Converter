@@ -12,8 +12,19 @@ function main() {
 	console.log(num_floors);
 	$('props-').prepend('number of floors is '+num_floors);
 	$('props-').prepend('site elevation is '+$('site-').attr('elev')+'<br>');
+	
+	plan();
 }
 
+function plan() {
+jQuery('<div>', {
+    id: 'some-id',
+    class: 'plan',
+    title: 'now this div has a title!',
+	html:'this will be a plan'
+}).appendTo('plan-');  
+	
+}
 
 /*
 var container = document.getElementById('pcontainer');
