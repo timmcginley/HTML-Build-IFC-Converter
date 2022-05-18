@@ -1,3 +1,5 @@
+''' written by Tim McGinley 2022 '''
+
 import ifcopenshell
 import os.path
 import time
@@ -78,18 +80,22 @@ def writeCustomHTML(model):
     custom=""
     site_elev = 0 # variable for to store the elevation of the site
     
+    # ---- DEFINE THE MODEL
+    
+    custom+=2*"\t"+"<model->\n"
+    
     # ---- ADD PROJECT CUSTOM ENTITY
     project = model.by_type('IfcProject')[0]
-    custom+=2*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
+    custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
     # it looks like it would make sense to use the DOM here and append stuff to it...
     
     # ---- ADD SITE CUSTOM ENTITY
     site = model.by_type('IfcSite')[0]
     site_elev = site.RefElevation
-    custom+=3*"\t"+"<site- lat=\"{}\" long=\"{}\" elev=\"{}\">\n".format(site.RefLatitude,site.RefLongitude,site_elev )
+    custom+=4*"\t"+"<site- lat=\"{}\" long=\"{}\" elev=\"{}\">\n".format(site.RefLatitude,site.RefLongitude,site_elev )
 
     # ---- ADD BUILDING CUSTOM ENTITY
-    custom+=4*"\t"+"<building->\n"
+    custom+=5*"\t"+"<building->\n"
 
     # ---- ADD FLOOR CUSTOM ENTITIES
     floors = model.by_type('IfcBuildingStorey')
@@ -106,15 +112,32 @@ def writeCustomHTML(model):
         else:
             type = "floor_lower"
         
-        custom+=5*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
+        custom+=6*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
         
         if (type == "floor_ground"):
-            custom+="<ground-></ground->"
+            custom+=6*"\t"+"<ground-></ground->\n"
     
-    # ---- CLOSE IT ALL
-    custom+=4*"\t"+"</building->\n"
-    custom+=3*"\t"+"</site->\n"
-    custom+=2*"\t"+"</project->\n"
+    # ---- CLOSE BUILDING
+    custom+=5*"\t"+"</building->\n"
+    
+    # ---- CLOSE SITE AND PROJECT
+    custom+=4*"\t"+"</site->\n"
+    custom+=3*"\t"+"</project->\n"
+    
+    # ---- END OF MODEL ENTITY
+    custom+=2*"\t"+"</model->\n"
+    
+    # ---- ADD VIEWS.
+    custom+=2*"\t"+"<view->\n"
+    
+    # ---- ADD PLAN.
+    custom+=3*"\t"+"<plan-></plan->\n"
+    
+    # ---- ADD PROPERTIES ETC.
+    custom+=3*"\t"+"<props-></props->\n"
+    
+    # ---- CLOSE VIEWS
+    custom+=2*"\t"+"</view->\n"
     
     # ---- RETURN THE CUSTOM HTML
     return custom

@@ -1,9 +1,33 @@
 /* written by Tim McGinley 2022 */
 
+/* model*/
+model- {
+	display:block;
+	background-color:#ffa;
+	width:50%;
+	border:none;
+	color:#1b1b1b;
+	margin:auto;
+	padding-bottom:50px;
+	FLOAT:LEFT;
+	height:100%;
+}
 
+view- {
+	display:block;
+	background-color:#ffc;
+	width:50%;
+	border:none;
+	color:#1b1b1b;
+	margin:auto;
+	padding-bottom:50px;
+	FLOAT:LEFT;
+	height:100%;
+}
+
+/* follows the project, site, building, floor hierachy */
 
 /* ifcProject*/
-
 project- {
 	display:block;
 	padding:5px;
@@ -15,10 +39,16 @@ project- {
 	color:#1b1b1b;
 	margin:auto;
 	padding-bottom:50px;
+	Float:left;
+}
+
+/*ifcSite */
+site- {
+	display:block;
+	margin-top: 20px;
 }
 
 /* This is not normally used but has uses */
-
 core- {
 	display:block;
 	background-color:#000;
@@ -32,31 +62,22 @@ core- {
 }
 
 /*ifcBuilding */
-
 building- {
 	display:block;
 	background-color:#ddd;
-	margin: auto;
 	padding:0px;
+	margin:5px;
 	border-color: #000;
 	width:270px;
 	color:#1b1b1b;
 	/*border-top: 4px solid black;*/
 	min-height: 20px;
 	overflow: hidden;
-}
-
-/*ifcSite */
-
-site- {
-	display:block;
-	margin-top: 20px;
-	padding-left:20px;
+	margin:auto;
 }
 
 /* This could also be zone
 it is container for a block of floors */
-
 segment- {
 	display:block;
 	background-color:#fff;
@@ -72,7 +93,6 @@ segment- {
 }
 
 /* ifcBuildingStorey */
-
 floor- {
 	display:block;
 	background-color:#fff;
@@ -86,8 +106,41 @@ floor- {
 	border-bottom: 4px solid black;
 }
 
-/* MEP stuff is in this floor */
+/* VIEW DEFINITIONS...
 
+/* plan - this contains a plan of the currently selected floor*/
+plan- {
+	display:block;
+	background-color:#ddd;
+	margin: auto;
+	padding:0px;
+	border-color: #000;
+	width:270px;
+	color:#1b1b1b;
+	/*border-top: 4px solid black;*/
+	min-height: 20px;
+	overflow: hidden;
+	margin:auto;
+	margin-top:5px;
+}
+
+/* properties - this contains the calculated properties*/
+props- {
+	display:block;
+	background-color:#ddd;
+	margin: auto;
+	padding:0px;
+	border-color: #000;
+	width:270px;
+	color:#1b1b1b;
+	/*border-top: 4px solid black;*/
+	min-height: 20px;
+	overflow: hidden;
+	margin:auto;
+	margin-top:5px;
+}
+
+/* MEP stuff is in this floor */
 mep- {
 	display:block;
 	background-color:#fff;
@@ -101,8 +154,7 @@ mep- {
 	border-top: 2px dashed cyan;
 }
 
-
-
+/* ground line */
 ground-{
 	display:block;
 	margin: auto;
@@ -115,8 +167,9 @@ ground-{
 	
 }
 
-/* floor styling */
+/* STYLING */
 
+/* floor styling */
 .floor_name {
 	float:left;
 	padding-left:20px;
