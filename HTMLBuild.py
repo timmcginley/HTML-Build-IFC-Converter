@@ -86,7 +86,7 @@ def writeCustomHTML(model):
     
     # ---- ADD PROJECT CUSTOM ENTITY
     project = model.by_type('IfcProject')[0]
-    custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
+    custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)8
     # it looks like it would make sense to use the DOM here and append stuff to it...
     
     # ---- ADD SITE CUSTOM ENTITY
@@ -97,7 +97,7 @@ def writeCustomHTML(model):
     # ---- ADD BUILDING CUSTOM ENTITY
     custom+=5*"\t"+"<building->\n"
     
-    
+   
     
     # ---- ADD FLOOR CUSTOM ENTITIES
     floors = model.by_type('IfcBuildingStorey')
