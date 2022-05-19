@@ -96,26 +96,16 @@ def writeCustomHTML(model):
 
     # ---- ADD BUILDING CUSTOM ENTITY
     custom+=5*"\t"+"<building->\n"
-
+    
+    
+    
     # ---- ADD FLOOR CUSTOM ENTITIES
     floors = model.by_type('IfcBuildingStorey')
     floors.sort(key=lambda x: x.Elevation, reverse=True)
-
-    for floor in floors:
-        # check if floor is lower than elevation...
-        type = "floor_upper"
-        if ( site_elev-.1 <= floor.Elevation <= site_elev+.1):
-            type = "floor_ground"
-            
-        elif (site_elev < floor.Elevation):
-            type = "floor_upper"
-        else:
-            type = "floor_lower"
-        
-        custom+=6*"\t"+"<floor- class=\""+type+"\" elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
-        
-        if (type == "floor_ground"):
-            custom+=6*"\t"+"<ground-></ground->\n"
+   
+    
+    # ---- CLASSIFY THE FLOORS AS LOWER, GROUND OR UPPER AND WRITE TO CUSTOM ENTITIES
+    custom+= classifyFloors(floors,site_elev)
     
     # ---- CLOSE BUILDING
     custom+=5*"\t"+"</building->\n"
@@ -142,5 +132,33 @@ def writeCustomHTML(model):
     # ---- RETURN THE CUSTOM HTML
     return custom
 
+def classifyFloors(floors,site_elev):
 
-
+    '''
+    another way after arranging them would be to split them into above and below ground floor sets.
+    '''
+    
+    floor_entities = ''
+    
+    # these are interesting and probably should be output somwhere - maybe to the building data?
+    lower_floors = sum(f.Elevation < 0.1 for f in floors)
+    level = len(floors)-lower_floors
+    
+    for floor in floors:
+        # check if floor is lower than elevation...
+        type = "floor_upper"
+        if ( site_elev-.1 <= floor.Elevation <= site_elev+.1):
+            type = "floor_ground"
+        elif (site_elev < floor.Elevation):
+            type = "floor_upper"
+        else:
+            type = "floor_lower"
+           
+        # THE SPAN STUFF SHOULD BE DEALT WITH IN JS...
+        
+        floor_entities+=6*"\t"+"<floor- class=\""+type+"\" name='{}'  level='{}' elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Name, level, floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
+        level-=1
+        if (type == "floor_ground"):
+            floor_entities+=6*"\t"+"<ground-></ground->\n"
+            
+    return floor_entities

@@ -7,30 +7,50 @@
 
 
 function main() {
+	
+	// calculate the floors
 	const floors = document.getElementsByTagName("floor-");
 	let num_floors = floors.length;
 	console.log(num_floors);
+	
+	// add data to the properties box
 	$('props-').prepend('number of floors is '+num_floors);
 	$('props-').prepend('site elevation is '+$('site-').attr('elev')+'<br>');
 	
-	plan();
+	// load the plan so we can edit it
+	plan('happy');
+	
+	// The .each() method is unnecessary here:
+	$( 'floor-' ).each(function() {
+	console.log($(this)[0].innerHTML);
+		$( this ).on("click", function(){
+			//$('plan-').css("background-color","black");
+			
+			changePlan($(this).attr('name')+':'+$(this).attr('level'));
+			//$( this ).innerHTML
+		});
+	});
+	
+	
 }
 
-function plan() {
+function plan(text) {
 jQuery('<div>', {
-    id: 'some-id',
+    id: 'plan',
     class: 'plan',
-    title: 'now this div has a title!',
-	html:'this will be a plan'
+    title: 'click a floor to see the plan',
+	html:text
 }).appendTo('plan-');  
 	
 }
 
-/*
-var container = document.getElementById('pcontainer');
-container.insertBefore(document.createElement("p"), container.firstChild);
+function changePlan(text) {
+	$('#plan').html(text);
+}
 
-*/
+
+
+
 
 // <project-> - title etc.... | <site-> - also menu? site specific data?
 // ---------------------------------------------------------------------
