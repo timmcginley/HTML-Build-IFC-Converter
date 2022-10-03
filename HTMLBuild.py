@@ -3,14 +3,15 @@
 import ifcopenshell
 import os.path
 import time
+from pathlib import Path
 
 def modelLoader(name):
-
+    
     ''' 
         load the IFC file 
     '''
-    
-    model_url = "model/"+name+".ifc"
+    dir_path = Path(__file__).parent
+    model_url = Path.joinpath(dir_path, 'model', name).with_suffix('.ifc')
     start_time = time.time()
 
     if (os.path.exists(model_url)):
@@ -23,7 +24,8 @@ def modelLoader(name):
         print("\tConvert : {:.4f}s".format(float(time.time() - start_time)))
         
     else:
-        print("\nERROR: please check your model folder : " +model_url+" does not exist")
+        print("\nERROR: please check your model folder : " +str(model_url)+" does not exist")
+
 
 def writeHTML(model,name):
 
@@ -32,13 +34,14 @@ def writeHTML(model,name):
     '''
     
     # parent directory - put in setting file?
-    parent_dir = "output/"
+    model_dir = Path.joinpath(Path(__file__).parent, 'output', name)
+
     # create an HTML file to write to
-    if (os.path.exists("output/"+name))==False:
-        path = os.path.join(parent_dir, name)
-        os.mkdir(path)
+    if not os.path.exists(model_dir):
+        # path = os.path.join(parent_dir, name)
+        os.mkdir(model_dir)
     
-    f_loc="output/"+name+"/index.html"
+    f_loc=Path.joinpath(model_dir, 'index.html')
     f = open(f_loc, "w")
     cont=""
     
@@ -69,7 +72,7 @@ def writeHTML(model,name):
     f.close()
 
     # ---- TELL EVERYONE ABOUT IT
-    print("\tSave    : "+f_loc)
+    print("\tSave    : "+str(f_loc))
 
 def writeCustomHTML(model):
 
@@ -86,7 +89,7 @@ def writeCustomHTML(model):
     
     # ---- ADD PROJECT CUSTOM ENTITY
     project = model.by_type('IfcProject')[0]
-    custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)8
+    custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
     # it looks like it would make sense to use the DOM here and append stuff to it...
     
     # ---- ADD SITE CUSTOM ENTITY
