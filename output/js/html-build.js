@@ -6,6 +6,7 @@
 // we need to split the screen into section and plan and KPIs and info - where should this go?
 
 
+
 function main() {
 	
 	// calculate the floors
@@ -31,7 +32,6 @@ function main() {
 		});
 	});
 	
-	
 }
 
 function plan(text) {
@@ -48,18 +48,31 @@ function changePlan(text) {
 	$('#plan').html(text);
 }
 
+// HTML-Build DOM
+
+// shoulds include...
+/*
 
 
 
 
-// <project-> - title etc.... | <site-> - also menu? site specific data?
+
+*/
+
+
 // ---------------------------------------------------------------------
-// <building-> - name of the building? this then needs to split in two...
-// could also be more views and show a 3d? but maybe left is consistent
+//   model                    |             view
+//    '-> project             |               '-> plan               
+//      '-> site              |       this shows a floor in plan        |
+//        '-> building        |                                         |
+// #section                   |               '-> props                 |
+// this shows the floors      |      this shows the selected properties |
+// in section                 |                                         |
+//    <floor...->             |                                         |
+//                            |                                         |
 // ---------------------------------------------------------------------
-// #section                   |               #plan
-// this shows the floors      |      this shows a floor in plan         |
-// in section                 |                 #plan                   |
-//    <floor...->              -----------------------------------------
-//                            |                 <properties->           |
-// ---------------------------------------------------------------------
+
+
+
+
+

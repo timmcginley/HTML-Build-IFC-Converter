@@ -97,13 +97,10 @@ def writeCustomHTML(model):
     # ---- ADD BUILDING CUSTOM ENTITY
     custom+=5*"\t"+"<building->\n"
     
-   
-    
     # ---- ADD FLOOR CUSTOM ENTITIES
     floors = model.by_type('IfcBuildingStorey')
     floors.sort(key=lambda x: x.Elevation, reverse=True)
    
-    
     # ---- CLASSIFY THE FLOORS AS LOWER, GROUND OR UPPER AND WRITE TO CUSTOM ENTITIES
     custom+= classifyFloors(floors,site_elev)
     
