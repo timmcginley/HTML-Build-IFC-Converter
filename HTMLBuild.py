@@ -42,33 +42,33 @@ def writeHTML(model,name):
     f = open(f_loc, "w")
     cont=""
     
-    # ---- START OF STANDARD HTML
+    # ---- start of standard HTML
     cont+=0*"\t"+"<HTML>\n"
-    # ---- ADD HEAD
+    # ---- add HEAD
     cont+=1*"\t"+"<HEAD>\n"
-    # ---- ADD HTMLBUILD CSS - COULD ADD OTHERS HERE :)
+    # ---- add HTMLBUILD CSS - could add others here :)
     cont+=2*"\t"+"<LINK rel='stylesheet' href='../css/html-build.css'></LINK>\n"
-    # ---- ADD HTMLBUILD JS - COULD ADD OTHERS HERE :)
+    # ---- add HTMLBUILD JS
     cont+=2*"\t"+"<SCRIPT src='../js/html-build.js'></SCRIPT>\n"
-    # ---- JQUERY - IT WOULD BE CRAZY NOT TO
+    # ---- JQUERY - it would be crazy not to
     cont+=2*"\t"+"<SCRIPT src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js'></SCRIPT>\n"
-    # ---- CLOSE HEAD
+    # ---- close HEAD
     cont+=1*"\t"+"</HEAD>\n"
-    # ---- ADD BODY
+    # ---- add BODY
     cont+=1*"\t"+"<BODY onload=\"main()\">\n"  
     
-    # ---- ADD CUSTOM HTML FOR THE BUILDING HERE
+    # ---- add CUSTOM HTML for the BUILDING here
     cont+=writeCustomHTML(model)
     
-    # ---- CLOSE BODY AND HTML ENTITIES
+    # ---- close BODY AND HTML ENTITIES
     cont+=1*"\t"+"</BODY>\n"   
     cont+=0*"\t"+"</HTML>\n"
 
-    # ---- WRITE IT OUT
+    # ---- write it out
     f.write(cont)
     f.close()
 
-    # ---- TELL EVERYONE ABOUT IT
+    # ---- tell everyone about it
     print("\tSave    : "+f_loc)
 
 def writeCustomHTML(model):
@@ -78,55 +78,53 @@ def writeCustomHTML(model):
     '''
     
     custom=""
-    site_elev = 0 # variable for to store the elevation of the site
+    site_elev = 0 # variable to store the elevation of the site
     
-    # ---- DEFINE THE MODEL
+    # ---- define the MODEL
     
     custom+=2*"\t"+"<model->\n"
     
-    # ---- ADD PROJECT CUSTOM ENTITY
+    # ---- add PROJECT custom entity
     project = model.by_type('IfcProject')[0]
     custom+=3*"\t"+"<project- name=\"{d}\">\n".format(d=project.LongName)
     # it looks like it would make sense to use the DOM here and append stuff to it...
     
-    # ---- ADD SITE CUSTOM ENTITY
+    # ---- add SITE custom entity
     site = model.by_type('IfcSite')[0]
     site_elev = site.RefElevation
     custom+=4*"\t"+"<site- lat=\"{}\" long=\"{}\" elev=\"{}\">\n".format(site.RefLatitude,site.RefLongitude,site_elev )
 
-    # ---- ADD BUILDING CUSTOM ENTITY
+    # ---- add BUILDING custom entity
     custom+=5*"\t"+"<building->\n"
     
-    # ---- ADD FLOOR CUSTOM ENTITIES
+    # ---- add FLOOR custom entity
     floors = model.by_type('IfcBuildingStorey')
     floors.sort(key=lambda x: x.Elevation, reverse=True)
    
-    # ---- CLASSIFY THE FLOORS AS LOWER, GROUND OR UPPER AND WRITE TO CUSTOM ENTITIES
+    # ---- classify FLOOR as LOWER, GROUND OR UPPER and write to custom entities
     custom+= classifyFloors(floors,site_elev)
     
-    # ---- CLOSE BUILDING
+    # ---- close BUILDING, SITE and PROJECT
     custom+=5*"\t"+"</building->\n"
-    
-    # ---- CLOSE SITE AND PROJECT
     custom+=4*"\t"+"</site->\n"
     custom+=3*"\t"+"</project->\n"
     
-    # ---- END OF MODEL ENTITY
+    # ---- close MODEL custom entity
     custom+=2*"\t"+"</model->\n"
     
-    # ---- ADD VIEWS.
+    # ---- add VIEW
     custom+=2*"\t"+"<view->\n"
     
-    # ---- ADD PLAN.
+    # ---- add PLAN.
     custom+=3*"\t"+"<plan-></plan->\n"
     
-    # ---- ADD PROPERTIES ETC.
+    # ---- add PROPERTIES etc..
     custom+=3*"\t"+"<props-></props->\n"
     
-    # ---- CLOSE VIEWS
+    # ---- close VIEW
     custom+=2*"\t"+"</view->\n"
     
-    # ---- RETURN THE CUSTOM HTML
+    # ---- return the CUSTOM HTML
     return custom
 
 def classifyFloors(floors,site_elev):
@@ -151,7 +149,7 @@ def classifyFloors(floors,site_elev):
         else:
             type = "floor_lower"
            
-        # THE SPAN STUFF SHOULD BE DEALT WITH IN JS...
+        # Tthe span stuff should be dealt with in JS...
         
         floor_entities+=6*"\t"+"<floor- class=\""+type+"\" name='{}'  level='{}' elev=\"{}\" >{}<span class=\"floor_stats\">{}</span> </floor->\n".format(floor.Name, level, floor.Elevation,floor.Name, round(float(floor.Elevation),3))     
         level-=1
