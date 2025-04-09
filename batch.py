@@ -3,6 +3,6 @@
 import HTMLBuild as hb
 
 i=1
-while i < 10:
-    hb.modelLoader("22_{}_01".format(str(i).rjust(2, '0')))
+while i < 13:
+    hb.modelLoader("24_{}_MEP".format(str(i).rjust(2, '0')))
     i+=1
